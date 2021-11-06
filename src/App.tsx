@@ -1,10 +1,14 @@
+import { ChakraProvider } from '@chakra-ui/react';
+
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>伝説の始まり</p>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <header className="App-header">
+          <p>伝説の始まり</p>
+        </header>
+      </div>
+    </ChakraProvider>
   );
 };
 
