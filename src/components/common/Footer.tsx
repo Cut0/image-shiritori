@@ -1,5 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import { RouteInfoList } from '../../utils/routes';
+import { routeInfoList } from '../../utils/routes';
 /**
  * @chakura-uiのLinkでデフォルトのスタイルが適用されているためreact-router-domを直接利用する。
  */
@@ -17,7 +17,7 @@ export const Footer = () => {
       bgColor="background"
       templateColumns="repeat(4, 1fr)"
     >
-      {RouteInfoList.map((routeInfo, index) => (
+      {routeInfoList.map((routeInfo, index) => (
         <GridItem m="auto" key={index}>
           <Link to={routeInfo.path}>
             <routeInfo.icon />
