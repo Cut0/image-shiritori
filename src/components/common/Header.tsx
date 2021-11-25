@@ -12,7 +12,7 @@ export const Header = () => {
       p={4}
       bgColor="background"
       align="center"
-      z-zIndex="1"
+      zIndex="1"
     >
       <locationInfo.icon />
       <Text ml={4} textStyle="heading" color="primary">
