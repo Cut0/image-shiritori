@@ -1,19 +1,28 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Box } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Header, Footer } from './components/common';
+import { theme } from './theme';
+import { RouteInfoList } from './utils/routes';
 
 const App = () => {
   return (
-    <ChakraProvider>
-      <BrowserRouter>
-        <h1>Hello React Router</h1>
-        <Routes>
-          <Route path="/" element={<p>home</p>} />
-          <Route path="/ranking" element={<p>ranking</p>} />
-          <Route path="/profile" element={<p>profile</p>} />
-          <Route path="/config" element={<p>config</p>} />
-        </Routes>
-      </BrowserRouter>
-    </ChakraProvider>
+    <BrowserRouter>
+      <ChakraProvider theme={theme}>
+        <Header />
+        <Box h="100vh" w="100%" py={16} bgColor="whiteBackground">
+          <Routes>
+            {RouteInfoList.map((routeInfo, index) => (
+              <Route
+                key={index}
+                path={routeInfo.path}
+                element={<p>{routeInfo.name}</p>}
+              />
+            ))}
+          </Routes>
+        </Box>
+        <Footer />
+      </ChakraProvider>
+    </BrowserRouter>
   );
 };
 
