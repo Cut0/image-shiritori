@@ -8,7 +8,7 @@ type RouteType = {
 };
 
 const RouteInfoList: RouteType[] = [
-  { name: 'Home', path: '/', icon: GameIcon },
+  { name: 'Game', path: '/', icon: GameIcon },
   { name: 'Ranking', path: '/ranking', icon: CrownIcon },
   { name: 'Book', path: '/book', icon: BookIcon },
   { name: 'Setting', path: '/setting', icon: ConfigIcon },
