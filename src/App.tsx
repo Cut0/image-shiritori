@@ -9,7 +9,7 @@ const App = () => {
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <Header />
-        <Box h="100vh" w="100%" py={16} bgColor="whiteBackground">
+        <Box minH="100vh" w="100%" py={16} bgColor="lightBackground">
           <Routes>
             {routeInfoList.map((routeInfo, index) => (
               <Route
