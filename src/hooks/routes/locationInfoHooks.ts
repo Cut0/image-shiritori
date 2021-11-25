@@ -1,10 +1,10 @@
 import { useLocation } from 'react-router-dom';
-import { RouteInfoList } from '../../utils/routes';
+import { routeInfoList } from '../../utils/routes';
 
 export const useLocationInfo = () => {
   const location = useLocation();
-  const locationInfo = RouteInfoList.find(
+  const locationInfo = routeInfoList.find(
     (route) => route.path === location.pathname,
   );
-  return locationInfo ?? RouteInfoList[0];
+  return locationInfo ?? routeInfoList[0];
 };

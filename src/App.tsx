@@ -2,20 +2,20 @@ import { ChakraProvider, Box } from '@chakra-ui/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Header, Footer } from './components/common';
 import { theme } from './theme';
-import { RouteInfoList } from './utils/routes';
+import { routeInfoList } from './utils/routes';
 
 const App = () => {
   return (
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <Header />
-        <Box h="100vh" w="100%" py={16} bgColor="whiteBackground">
+        <Box minH="100vh" w="100%" py={16} bgColor="lightBackground">
           <Routes>
-            {RouteInfoList.map((routeInfo, index) => (
+            {routeInfoList.map((routeInfo, index) => (
               <Route
                 key={index}
                 path={routeInfo.path}
-                element={<p>{routeInfo.name}</p>}
+                element={<routeInfo.page />}
               />
             ))}
           </Routes>
