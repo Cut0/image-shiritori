@@ -46,9 +46,11 @@ export const theme = extendTheme({
     },
     body: {
       fontSize: '14px',
+      fontWeight: 'normal',
     },
     caption: {
       fontSize: '14px',
+      fontWeight: 'normal',
     },
   },
   config: {
