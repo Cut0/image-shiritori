@@ -5,6 +5,7 @@ export const theme = extendTheme({
     secondary: '#7E232A',
     whiteBackground: '#FFFFFF',
     lightBackground: '#D5CFAF',
+    focusLightBackground: '#D0CAAA',
     background: '#C5B47E',
     success: '#7DBE5B',
     danger: '#FF4C5B',
