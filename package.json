@@ -23,6 +23,7 @@
   "devDependencies": {
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.4.1"
   },
   "resolutions": {
@@ -32,7 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format:eslint": "eslint --fix --ext ts,tsx,js .",
+    "lint:eslint": "eslint --ext ts,tsx,js ."
   },
   "browserslist": {
     "production": [
