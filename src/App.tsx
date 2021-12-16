@@ -9,13 +9,13 @@ const App = () => {
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <Header />
-        <Box minH="100vh" w="100%" py={16} bgColor="lightBackground">
+        <Box bgColor="lightBackground" minH="100vh" py={16} w="100%">
           <Routes>
             {routeInfoList.map((routeInfo, index) => (
               <Route
+                element={<routeInfo.page />}
                 key={index}
                 path={routeInfo.path}
-                element={<routeInfo.page />}
               />
             ))}
           </Routes>

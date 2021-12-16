@@ -1,7 +1,7 @@
 import { FC } from 'react';
+import { Box } from '@chakra-ui/react';
 import { dummyWordList } from '../testdata/word';
 import { WordCard } from '../components/book/WordCard';
-import { Box } from '@chakra-ui/react';
 
 export const BookPage: FC<{}> = () => {
   const wordList = dummyWordList;
@@ -11,9 +11,9 @@ export const BookPage: FC<{}> = () => {
         {wordList.map((word, index) => {
           return (
             <WordCard
+              isLast={wordList.length === index + 1}
               key={index}
               word={word}
-              isLast={wordList.length === index + 1}
             ></WordCard>
           );
         })}

@@ -6,16 +6,16 @@ export const Header = () => {
 
   return (
     <Flex
-      pos="fixed"
-      w="100%"
+      align="center"
+      bgColor="background"
       h={16}
       p={4}
-      bgColor="background"
-      align="center"
+      pos="fixed"
+      w="100%"
       zIndex="1"
     >
       <locationInfo.icon />
-      <Text ml={4} textStyle="heading" color="primary">
+      <Text color="primary" ml={4} textStyle="heading">
         {locationInfo.name}
       </Text>
     </Flex>

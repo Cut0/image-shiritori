@@ -12,11 +12,11 @@ export const SettingPage: FC<{}> = () => {
   return (
     <Box maxW="720px" mx="auto">
       <Flex
+        _hover={{ bgColor: 'focusLightBackground' }}
         alignItems="center"
         color="text.main"
-        p={4}
         cursor="pointer"
-        _hover={{ bgColor: 'focusLightBackground' }}
+        p={4}
       >
         <GoogleIcon />
         <Text ml={2} textStyle="title">
@@ -24,11 +24,11 @@ export const SettingPage: FC<{}> = () => {
         </Text>
       </Flex>
       <Flex
+        _hover={{ bgColor: 'focusLightBackground' }}
         alignItems="center"
         color="text.main"
-        p={4}
         cursor="pointer"
-        _hover={{ bgColor: 'focusLightBackground' }}
+        p={4}
       >
         <TwitterIcon />
         <Text ml={2} textStyle="title">
@@ -36,11 +36,11 @@ export const SettingPage: FC<{}> = () => {
         </Text>
       </Flex>
       <Flex
+        _hover={{ bgColor: 'focusLightBackground' }}
         alignItems="center"
         color="text.main"
-        p={4}
         cursor="pointer"
-        _hover={{ bgColor: 'focusLightBackground' }}
+        p={4}
       >
         <FacebookIcon />
         <Text ml={2} textStyle="title">
@@ -48,13 +48,13 @@ export const SettingPage: FC<{}> = () => {
         </Text>
       </Flex>
       <Flex
+        _hover={{ bgColor: 'focusLightBackground' }}
         alignItems="center"
         borderBottom="2px"
         borderColor="text.main"
         color="text.main"
-        p={4}
         cursor="pointer"
-        _hover={{ bgColor: 'focusLightBackground' }}
+        p={4}
       >
         <LogoutIcon />
         <Text ml={2} textStyle="title">
@@ -62,11 +62,11 @@ export const SettingPage: FC<{}> = () => {
         </Text>
       </Flex>
       <Flex
+        _hover={{ bgColor: 'focusLightBackground' }}
         alignItems="center"
         color="text.main"
-        p={4}
         cursor="pointer"
-        _hover={{ bgColor: 'focusLightBackground' }}
+        p={4}
       >
         <ExitIcon />
         <Text ml={2} textStyle="title">
