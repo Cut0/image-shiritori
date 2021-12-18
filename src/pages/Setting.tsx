@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Text, Box, Flex } from '@chakra-ui/react';
 import {
   ExitIcon,
@@ -7,8 +7,10 @@ import {
   LogoutIcon,
   TwitterIcon,
 } from '../icons';
+import { AuthContext } from '../features/auth/store';
 
 export const SettingPage: FC<{}> = () => {
+  const [mySelf] = useContext(AuthContext);
   return (
     <Box maxW="720px" mx="auto">
       <Flex
@@ -47,32 +49,36 @@ export const SettingPage: FC<{}> = () => {
           Sign in with Facebook
         </Text>
       </Flex>
-      <Flex
-        _hover={{ bgColor: 'focusLightBackground' }}
-        alignItems="center"
-        borderBottom="2px"
-        borderColor="text.main"
-        color="text.main"
-        cursor="pointer"
-        p={4}
-      >
-        <LogoutIcon />
-        <Text ml={2} textStyle="title">
-          Sign out
-        </Text>
-      </Flex>
-      <Flex
-        _hover={{ bgColor: 'focusLightBackground' }}
-        alignItems="center"
-        color="text.main"
-        cursor="pointer"
-        p={4}
-      >
-        <ExitIcon />
-        <Text ml={2} textStyle="title">
-          Withdrawal
-        </Text>
-      </Flex>
+      {mySelf.status === 'success' && (
+        <>
+          <Flex
+            _hover={{ bgColor: 'focusLightBackground' }}
+            alignItems="center"
+            borderBottom="2px"
+            borderColor="text.main"
+            color="text.main"
+            cursor="pointer"
+            p={4}
+          >
+            <LogoutIcon />
+            <Text ml={2} textStyle="title">
+              Sign out
+            </Text>
+          </Flex>
+          <Flex
+            _hover={{ bgColor: 'focusLightBackground' }}
+            alignItems="center"
+            color="text.main"
+            cursor="pointer"
+            p={4}
+          >
+            <ExitIcon />
+            <Text ml={2} textStyle="title">
+              Withdrawal
+            </Text>
+          </Flex>
+        </>
+      )}
     </Box>
   );
 };

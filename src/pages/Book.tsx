@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box } from '@chakra-ui/react';
 import { dummyWordList } from '../testdata/word';
-import { WordCard } from '../components/book/WordCard';
+import { WordCard } from '../components/word/WordCard';
 
 export const BookPage: FC<{}> = () => {
   const wordList = dummyWordList;

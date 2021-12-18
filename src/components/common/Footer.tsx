@@ -1,6 +1,6 @@
 import { Grid, GridItem, Link } from '@chakra-ui/react';
 import { Link as ReactLink } from 'react-router-dom';
-import { routeInfoList } from '../../utils/routes';
+import { routeInfoList } from '../../features/routes/utils';
 
 export const Footer = () => {
   return (
