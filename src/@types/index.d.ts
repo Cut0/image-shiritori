@@ -7,11 +7,15 @@ export type User = {
 
 export type Book = {
   userId: string;
-  wordList: Word[];
+  wordList: {
+    id: string;
+    name: string;
+    date: Date;
+  }[];
 };
 
 export type Word = {
-  bookId: string;
+  id: string;
   name: string;
   mean: string;
   collectedAt: Date;

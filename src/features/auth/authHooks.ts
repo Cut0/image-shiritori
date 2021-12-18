@@ -16,19 +16,20 @@ export const useSubscribeAuthStateChanged = () => {
       dispatch({ type: 'FETCH_MYSELF_START' });
 
       const createNewUser = async () => {
-        const response = await userModel().create(user.uid);
+        const newUserData = {
+          id: user.uid,
+          name: user.displayName ?? '',
+          eyecatchUrl: user.photoURL ?? '',
+          wordCount: 0,
+        };
+        const response = await userModel().create(newUserData);
         if (response instanceof Error) {
           dispatch({ type: 'FETCH_MYSELF_FAILED', payload: response });
           return;
         }
         dispatch({
           type: 'FETCH_MYSELF_SUCCESS',
-          payload: {
-            id: user.uid,
-            name: user.displayName ?? '',
-            eyecatchUrl: user.photoURL ?? '',
-            wordCount: 0,
-          },
+          payload: newUserData,
         });
       };
 
@@ -44,12 +45,7 @@ export const useSubscribeAuthStateChanged = () => {
         }
         dispatch({
           type: 'FETCH_MYSELF_SUCCESS',
-          payload: {
-            id: user.uid,
-            name: user.displayName ?? '',
-            eyecatchUrl: user.photoURL ?? '',
-            wordCount: userData.wordCount,
-          },
+          payload: userData,
         });
       };
 
