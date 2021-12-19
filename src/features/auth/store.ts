@@ -9,6 +9,7 @@ type Action =
 type State =
   | { status: 'initial' }
   | { status: 'loading' }
+  | { status: 'none' }
   | { status: 'success'; user: User }
   | { status: 'failed'; error: Error };
 
@@ -39,7 +40,7 @@ export const reducer: Reducer<State, Action> = (
     case 'REMOVE_USER':
       return {
         ...state,
-        status: 'initial',
+        status: 'none',
       };
     default:
       return state;

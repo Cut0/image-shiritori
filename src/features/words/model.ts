@@ -10,7 +10,7 @@ export const wordModel = () => {
       await db.collection('words').doc(word.id).set(word);
     } catch (e) {
       console.error(e);
-      return new Error('500');
+      throw new Error('500');
     }
   };
 
@@ -20,11 +20,11 @@ export const wordModel = () => {
       if (doc.exists) {
         return doc.data() as Word;
       } else {
-        return new Error('404');
+        return undefined;
       }
     } catch (e) {
       console.error(e);
-      return new Error('500');
+      throw new Error('500');
     }
   };
   return { create, get };

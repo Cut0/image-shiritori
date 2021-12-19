@@ -21,38 +21,36 @@ export const useSubscribeAuthStateChanged = () => {
           name: user.displayName ?? '',
           eyecatchUrl: user.photoURL ?? '',
           wordCount: 0,
+          wordList: [],
         };
-        const userRes = await userModel().create(newUserData);
-
-        if (userRes instanceof Error) {
-          dispatch({ type: 'FETCH_MYSELF_FAILED', payload: userRes });
-          return;
-        }
-        dispatch({
-          type: 'FETCH_MYSELF_SUCCESS',
-          payload: newUserData,
-        });
+        userModel()
+          .create(newUserData)
+          .then(() => {
+            dispatch({
+              type: 'FETCH_MYSELF_SUCCESS',
+              payload: newUserData,
+            });
+          })
+          .catch((e) => {
+            dispatch({ type: 'FETCH_MYSELF_FAILED', payload: e });
+          });
       };
 
-      const fetchUser = async () => {
-        const userData = await userModel().get(user.uid);
-
-        if (userData instanceof Error) {
-          if (userData.message === '404') {
+      userModel()
+        .get(user.uid)
+        .then((userData) => {
+          if (userData === undefined) {
             createNewUser();
             return;
           }
-          dispatch({ type: 'FETCH_MYSELF_FAILED', payload: userData });
-          return;
-        }
-
-        dispatch({
-          type: 'FETCH_MYSELF_SUCCESS',
-          payload: userData,
+          dispatch({
+            type: 'FETCH_MYSELF_SUCCESS',
+            payload: userData,
+          });
+        })
+        .catch((e) => {
+          dispatch({ type: 'FETCH_MYSELF_FAILED', payload: e });
         });
-      };
-
-      fetchUser();
     });
 
     return () => {

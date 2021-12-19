@@ -5,12 +5,12 @@ import 'firebase/firestore';
 export const bookModel = () => {
   const db = firebase.firestore();
 
-  const create = async (userId: string) => {
+  const create = async (userId: string, initialWord: Book['wordList']) => {
     try {
-      await db.collection('books').add({ userId, wordList: [] });
+      await db.collection('books').add({ userId, wordList: initialWord });
     } catch (e) {
       console.error(e);
-      return new Error('500');
+      throw new Error('500');
     }
   };
 
@@ -24,16 +24,13 @@ export const bookModel = () => {
         .get()
         .then((snapShot) => {
           snapShot.forEach((doc) => {
-            res = doc.data() as Book;
+            res = { id: doc.id, ...doc.data() } as Book;
           });
         });
-      if (!res) {
-        return new Error('404');
-      }
       return res;
     } catch (e) {
       console.error(e);
-      return new Error('500');
+      throw new Error('500');
     }
   };
 
@@ -43,11 +40,11 @@ export const bookModel = () => {
         .collection('books')
         .doc(bookId)
         .update({
-          wordList: firebase.firestore.FieldValue.arrayUnion(wordList),
+          wordList: firebase.firestore.FieldValue.arrayUnion(...wordList),
         });
     } catch (e) {
       console.error(e);
-      return new Error('500');
+      throw new Error('500');
     }
   };
 

@@ -35,11 +35,12 @@ export const Dialog: FC<DialogProps> = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onCloseDialog}>
+          <Button mr={3} variant="primary" onClick={onCloseDialog}>
             Cancel
           </Button>
           <Button
-            variant="ghost"
+            backgroundColor="primary"
+            color="white"
             onClick={async () => {
               try {
                 onOk && (await onOk());

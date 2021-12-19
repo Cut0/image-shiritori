@@ -1,16 +1,21 @@
 export type User = {
   id: string;
   name: string;
-  wordCount: number;
   eyecatchUrl: string;
+  wordList: {
+    id: string;
+    name: string;
+    collectedAt: Date;
+  }[];
 };
 
 export type Book = {
+  id: string;
   userId: string;
   wordList: {
     id: string;
     name: string;
-    date: Date;
+    collectedAt: Date;
   }[];
 };
 
