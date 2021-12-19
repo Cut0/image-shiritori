@@ -9,6 +9,7 @@ export const userModel = () => {
     try {
       await db.collection('users').doc(user.id).set(user);
     } catch (e) {
+      console.error(e);
       return new Error('500');
     }
   };

@@ -9,6 +9,7 @@ export const wordModel = () => {
     try {
       await db.collection('words').doc(word.id).set(word);
     } catch (e) {
+      console.error(e);
       return new Error('500');
     }
   };

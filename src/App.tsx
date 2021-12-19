@@ -6,28 +6,30 @@ import { Header, Footer } from './components/common';
 import './plugins/firebase';
 import { routeInfoList } from './features/routes/utils';
 import { AuthContext, initialState, reducer } from './features/auth/store';
-import { useSubscribeAuthStateChanged } from './features/auth/authHooks';
-
+import { AppContainer } from './components/common/AppContainer';
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useSubscribeAuthStateChanged();
   return (
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <AuthContext.Provider value={[state, dispatch]}>
-          <Header />
-          <Box bgColor="lightBackground" minH="100vh" py={16} w="100%">
-            <Routes>
-              {routeInfoList.map((routeInfo, index) => (
-                <Route
-                  element={<routeInfo.page />}
-                  key={index}
-                  path={routeInfo.path}
-                />
-              ))}
-            </Routes>
-          </Box>
-          <Footer />
+          <AppContainer>
+            <>
+              <Header />
+              <Box bgColor="lightBackground" minH="100vh" py={16} w="100%">
+                <Routes>
+                  {routeInfoList.map((routeInfo, index) => (
+                    <Route
+                      element={<routeInfo.page />}
+                      key={index}
+                      path={routeInfo.path}
+                    />
+                  ))}
+                </Routes>
+              </Box>
+              <Footer />
+            </>
+          </AppContainer>
         </AuthContext.Provider>
       </ChakraProvider>
     </BrowserRouter>

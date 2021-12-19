@@ -9,6 +9,7 @@ export const bookModel = () => {
     try {
       await db.collection('books').add({ userId, wordList: [] });
     } catch (e) {
+      console.error(e);
       return new Error('500');
     }
   };
@@ -26,6 +27,9 @@ export const bookModel = () => {
             res = doc.data() as Book;
           });
         });
+      if (!res) {
+        return new Error('404');
+      }
       return res;
     } catch (e) {
       console.error(e);

@@ -22,9 +22,10 @@ export const useSubscribeAuthStateChanged = () => {
           eyecatchUrl: user.photoURL ?? '',
           wordCount: 0,
         };
-        const response = await userModel().create(newUserData);
-        if (response instanceof Error) {
-          dispatch({ type: 'FETCH_MYSELF_FAILED', payload: response });
+        const userRes = await userModel().create(newUserData);
+
+        if (userRes instanceof Error) {
+          dispatch({ type: 'FETCH_MYSELF_FAILED', payload: userRes });
           return;
         }
         dispatch({
@@ -35,6 +36,7 @@ export const useSubscribeAuthStateChanged = () => {
 
       const fetchUser = async () => {
         const userData = await userModel().get(user.uid);
+
         if (userData instanceof Error) {
           if (userData.message === '404') {
             createNewUser();
@@ -43,6 +45,7 @@ export const useSubscribeAuthStateChanged = () => {
           dispatch({ type: 'FETCH_MYSELF_FAILED', payload: userData });
           return;
         }
+
         dispatch({
           type: 'FETCH_MYSELF_SUCCESS',
           payload: userData,
@@ -55,5 +58,5 @@ export const useSubscribeAuthStateChanged = () => {
     return () => {
       unsubscribe();
     };
-  });
+  }, [dispatch]);
 };

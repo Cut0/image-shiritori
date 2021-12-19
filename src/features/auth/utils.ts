@@ -1,19 +1,19 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-export const signInWithGoogle = () => {
+export const signInWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  return firebase.auth().signInWithPopup(provider);
+  await firebase.auth().signInWithPopup(provider);
 };
 
-export const signInWithTwitter = () => {
+export const signInWithTwitter = async () => {
   const provider = new firebase.auth.TwitterAuthProvider();
-  return firebase.auth().signInWithPopup(provider);
+  await firebase.auth().signInWithPopup(provider);
 };
 
-export const signInWithFacebook = () => {
+export const signInWithFacebook = async () => {
   const provider = new firebase.auth.FacebookAuthProvider();
-  return firebase.auth().signInWithPopup(provider);
+  await firebase.auth().signInWithPopup(provider);
 };
 
 export const signOut = () => {
