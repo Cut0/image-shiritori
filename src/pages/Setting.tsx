@@ -1,5 +1,5 @@
-import { FC, useContext, useState } from 'react';
-import { Text, Box, Flex, useDisclosure } from '@chakra-ui/react';
+import { FC, useContext, useMemo, useState } from 'react';
+import { Text, Box, Flex, useDisclosure, useToast } from '@chakra-ui/react';
 import {
   ExitIcon,
   FacebookIcon,
@@ -22,32 +22,46 @@ type Handle = {
   action: () => Promise<void> | void;
 };
 
-const handles: Handle[] = [
-  {
-    text: 'Googleアカウントでログインしますか？',
-    action: signInWithGoogle,
-  },
-  {
-    text: 'Twitterでログインしますか？',
-    action: signInWithTwitter,
-  },
-  {
-    text: 'Facebookでログインしますか？',
-    action: signInWithFacebook,
-  },
-  {
-    text: 'ログアウトしますか？',
-    action: signOut,
-  },
-];
-
 export const SettingPage: FC<{}> = () => {
+  const toast = useToast();
+  const handles: Handle[] = useMemo(
+    () => [
+      {
+        text: 'Googleアカウントでログインしますか？',
+        action: signInWithGoogle,
+      },
+      {
+        text: 'Twitterでログインしますか？',
+        action: signInWithTwitter,
+      },
+      {
+        text: 'Facebookでログインしますか？',
+        action: signInWithFacebook,
+      },
+      {
+        text: 'ログアウトしますか？',
+        action: () => {
+          signOut().then(() => {
+            toast({
+              description: 'ログアウトしました',
+              status: 'success',
+              isClosable: true,
+              position: 'top',
+            });
+          });
+        },
+      },
+    ],
+    [toast],
+  );
   const [state] = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [handle, setHandle] = useState<Handle>({
     text: 'Googleアカウントでログインしますか？',
-    action: signInWithGoogle,
+    action: () => {
+      signInWithGoogle();
+    },
   });
   return (
     <>

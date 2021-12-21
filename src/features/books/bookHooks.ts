@@ -10,10 +10,10 @@ export const useBook = () => {
    * 状態を更新し、再レンダリングを引き起こすため useEffect で利用しない。
    */
   const updateBook = useCallback(
-    (wordList: Book['wordList']) => {
+    async (wordList: Book['wordList']) => {
       if (authState.status !== 'success') return;
       dispatch({ type: 'FETCH_MYSELF_START' });
-      userModel()
+      return await userModel()
         .updateBook(authState.user.id, wordList)
         .then(() => {
           dispatch({

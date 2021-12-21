@@ -14,6 +14,7 @@ import {
   Button,
   Text,
   Skeleton,
+  useToast,
 } from '@chakra-ui/react';
 import * as cocossd from '@tensorflow-models/coco-ssd';
 import { AuthContext } from '../features/auth/store';
@@ -26,13 +27,16 @@ export const GamePage: FC<{}> = () => {
   const [state] = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const wrapperEl = useRef<HTMLDivElement>(null);
   const videoEl = useRef<HTMLVideoElement>(null);
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
-  const wordName = useRef<undefined | string>(undefined);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const wordName = useRef<undefined | string>(undefined);
+  const stream = useRef<undefined | MediaStream>(undefined);
+  const renderable = useRef(true);
 
   const [updateBook] = useBook();
 
@@ -88,12 +92,11 @@ export const GamePage: FC<{}> = () => {
           wordName.current = undefined;
         }
       }
-
-      window.requestAnimationFrame(() => draw(coco, video, canvas));
+      if (renderable.current)
+        window.requestAnimationFrame(() => draw(coco, video, canvas));
     },
-    [],
+    [renderable],
   );
-
   const setUp = useCallback(async () => {
     updateClient();
     const video = videoEl.current;
@@ -101,7 +104,7 @@ export const GamePage: FC<{}> = () => {
 
     if (!canvas || !video) return;
 
-    video.srcObject = await navigator.mediaDevices.getUserMedia({
+    stream.current = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
         facingMode: 'environment',
@@ -110,6 +113,8 @@ export const GamePage: FC<{}> = () => {
         },
       },
     });
+
+    video.srcObject = stream.current;
 
     video.onloadedmetadata = async () => {
       const coco = await cocossd.load({ base: 'mobilenet_v1' });
@@ -120,19 +125,61 @@ export const GamePage: FC<{}> = () => {
 
   const submitWord = useCallback(() => {
     if (wordName.current === undefined) return;
-    if (state.status === 'none') {
+    if (state.status !== 'success') {
       onOpen();
+      return;
+    }
+    if (
+      state.user.wordList.length !== 0 &&
+      state.user.wordList.slice(-1)[0].name.slice(-1) !==
+        wordName.current.slice(0, 1)
+    ) {
+      toast({
+        description: `「${state.user.wordList
+          .slice(-1)[0]
+          .name.slice(-1)
+          .toUpperCase()}」から始まる英単語を探そう`,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
       return;
     }
     const wordList = [
       { id: '1', name: wordName.current, collectedAt: new Date() },
     ];
-    updateBook(wordList);
-  }, [state, wordName, onOpen, updateBook]);
+    updateBook(wordList)
+      .then(() => {
+        toast({
+          description: '単語を登録しました',
+          status: 'success',
+          isClosable: true,
+          position: 'top',
+        });
+      })
+      .catch(() => {
+        toast({
+          description: '単語の登録に失敗しました',
+          status: 'error',
+          isClosable: true,
+        });
+      });
+  }, [state, wordName, onOpen, updateBook, toast]);
 
   useEffect(() => {
     setUp();
   }, [setUp]);
+
+  useEffect(() => {
+    const video = videoEl.current;
+    return () => {
+      renderable.current = false;
+      video?.pause();
+      stream.current?.getAudioTracks().forEach((track) => {
+        track.stop();
+      });
+    };
+  }, []);
 
   return (
     <>
