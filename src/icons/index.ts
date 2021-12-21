@@ -7,6 +7,7 @@ import { ReactComponent as GameIcon } from './game.svg';
 import { ReactComponent as GoogleIcon } from './google.svg';
 import { ReactComponent as LogoutIcon } from './logout.svg';
 import { ReactComponent as TwitterIcon } from './twitter.svg';
+import { ReactComponent as SearchIcon } from './magnify.svg';
 
 export {
   BookIcon,
@@ -14,6 +15,7 @@ export {
   CrownIcon,
   ExitIcon,
   FacebookIcon,
+  SearchIcon,
   GameIcon,
   GoogleIcon,
   LogoutIcon,

@@ -6,6 +6,8 @@
     "@chakra-ui/react": "^1.6.12",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@tensorflow-models/coco-ssd": "^2.2.2",
+    "@tensorflow/tfjs": "^3.12.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
