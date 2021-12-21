@@ -24,14 +24,15 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - uses: actions/checkout@v2
-      - env:
+      - name: Build React app
+        env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
           REACT_APP_AUTHDOMAIN: ${{ secrets.REACT_APP_AUTHDOMAIN }}
           REACT_APP_PROJECTID: ${{ secrets.REACT_APP_PROJECTID }}
           REACT_APP_STORAGEBUCKET: ${{ secrets.REACT_APP_STORAGEBUCKET }}
           REACT_APP_MESSAGEINGSENDERID: ${{ secrets.REACT_APP_MESSAGEINGSENDERID }}
           REACT_APP_APPID: ${{ secrets.REACT_APP_APPID }}
-      - run: yarn install && yarn build
+        run: yarn install && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
