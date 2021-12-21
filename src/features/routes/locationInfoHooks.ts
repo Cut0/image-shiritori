@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { routeInfoList } from '../../utils/routes';
+import { routeInfoList } from './utils';
 
 export const useLocationInfo = () => {
   const location = useLocation();

@@ -45,7 +45,7 @@ export const UserCard: FC<UserCardProps> = ({ user, ranking, showRanking }) => {
         {user.name}
       </Text>
       <Text color="text.main" textStyle="caption">
-        {user.wordCount} words
+        {user.wordList.length} words
       </Text>
     </Flex>
   );

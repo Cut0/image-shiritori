@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { useLocationInfo } from '../../hooks/routes';
+import { useLocationInfo } from '../../features/routes/locationInfoHooks';
 
 export const Header = () => {
   const locationInfo = useLocationInfo();

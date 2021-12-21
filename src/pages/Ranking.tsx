@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box, Grid } from '@chakra-ui/react';
 import { dummyUserList } from '../testdata/user';
-import { UserCard } from '../components/ranking/UserCard';
+import { UserCard } from '../components/user/UserCard';
 
 export const RankingPage: FC<{}> = () => {
   const userList = dummyUserList;
