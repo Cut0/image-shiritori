@@ -71,7 +71,7 @@ export const SettingPage: FC<{}> = () => {
           }}
         >
           <GoogleIcon />
-          <Text ml={2} textStyle="title">
+          <Text ml={2} textStyle="subheading">
             Sign in with Google
           </Text>
         </Flex>
@@ -88,7 +88,7 @@ export const SettingPage: FC<{}> = () => {
           }}
         >
           <TwitterIcon />
-          <Text ml={2} textStyle="title">
+          <Text ml={2} textStyle="subheading">
             Sign in with Twitter
           </Text>
         </Flex>
@@ -105,7 +105,7 @@ export const SettingPage: FC<{}> = () => {
           }}
         >
           <FacebookIcon />
-          <Text ml={2} textStyle="title">
+          <Text ml={2} textStyle="subheading">
             Sign in with Facebook
           </Text>
         </Flex>
@@ -126,7 +126,7 @@ export const SettingPage: FC<{}> = () => {
               }}
             >
               <LogoutIcon />
-              <Text ml={2} textStyle="title">
+              <Text ml={2} textStyle="subheading">
                 Sign out
               </Text>
             </Flex>
@@ -138,7 +138,7 @@ export const SettingPage: FC<{}> = () => {
               p={4}
             >
               <ExitIcon />
-              <Text ml={2} textStyle="title">
+              <Text ml={2} textStyle="subheading">
                 Withdrawal
               </Text>
             </Flex>
