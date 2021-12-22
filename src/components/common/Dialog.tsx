@@ -15,7 +15,7 @@ type DialogProps = {
   isOpenDialog: boolean;
   content: string;
   onOk?: () => Promise<void> | void;
-  onCloseDialog: () => void;
+  onCloseDialog?: () => void;
 };
 
 export const Dialog: FC<DialogProps> = ({
@@ -25,19 +25,26 @@ export const Dialog: FC<DialogProps> = ({
   onOk,
 }) => {
   return (
-    <Modal isOpen={isOpenDialog} onClose={onCloseDialog}>
+    <Modal
+      isOpen={isOpenDialog}
+      onClose={() => {
+        onCloseDialog && onCloseDialog();
+      }}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>確認</ModalHeader>
-        <ModalCloseButton />
+        {onCloseDialog && <ModalCloseButton />}
         <ModalBody>
           <Text>{content}</Text>
         </ModalBody>
 
         <ModalFooter>
-          <Button mr={3} variant="primary" onClick={onCloseDialog}>
-            Cancel
-          </Button>
+          {onCloseDialog && (
+            <Button mr={3} variant="primary" onClick={onCloseDialog}>
+              Cancel
+            </Button>
+          )}
           <Button
             backgroundColor="primary"
             color="white"
@@ -45,7 +52,7 @@ export const Dialog: FC<DialogProps> = ({
               try {
                 onOk && (await onOk());
               } finally {
-                onCloseDialog();
+                onCloseDialog && onCloseDialog();
               }
             }}
           >

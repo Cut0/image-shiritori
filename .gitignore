@@ -18,7 +18,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+image-shiritori-firebase-adminsdk-m5yje-ae4c0bf3e2.json
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+

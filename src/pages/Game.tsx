@@ -22,6 +22,7 @@ import { Dialog } from '../components/common/Dialog';
 import '@tensorflow/tfjs';
 import { SearchIcon } from '../icons';
 import { useBook } from '../features/books/bookHooks';
+import { getFeatureFlag } from '../features/featureToggle';
 
 export const GamePage: FC<{}> = () => {
   const [state] = useContext(AuthContext);
@@ -124,12 +125,21 @@ export const GamePage: FC<{}> = () => {
   }, [draw, updateClient]);
 
   const submitWord = useCallback(() => {
-    if (wordName.current === undefined) return;
+    if (wordName.current === undefined) {
+      toast({
+        description: '単語を検知することができませんでした',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
     if (state.status !== 'success') {
       onOpen();
       return;
     }
     if (
+      getFeatureFlag().shiritori &&
       state.user.wordList.length !== 0 &&
       state.user.wordList.slice(-1)[0].name.slice(-1) !==
         wordName.current.slice(0, 1)

@@ -15,6 +15,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "dayjs": "^1.10.7",
     "firebase": "^8.10.0",
     "framer-motion": "^4",
     "react": "^17.0.2",
@@ -27,7 +28,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "prettier": "^2.4.1"
+    "firebase-admin": "^10.0.1",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.4.0"
   },
   "resolutions": {
     "@chakra-ui/color-mode": "<1.1.13"
@@ -38,7 +41,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format:eslint": "eslint --fix --ext ts,tsx,js .",
-    "lint:eslint": "eslint --ext ts,tsx,js ."
+    "lint:eslint": "eslint --ext ts,tsx,js .",
+    "create:user": "ts-node -P ./tsconfig.script.json scripts/createUser.ts"
   },
   "browserslist": {
     "production": [

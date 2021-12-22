@@ -20,6 +20,7 @@ export const useBook = () => {
             type: 'FETCH_MYSELF_SUCCESS',
             payload: {
               ...authState.user,
+              wordCount: authState.user.wordCount + 1,
               wordList: [...authState.user.wordList, ...wordList],
             },
           });

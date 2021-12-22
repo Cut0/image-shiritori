@@ -1,7 +1,10 @@
+import 'firebase/firestore';
+
 export type User = {
   id: string;
   name: string;
   eyecatchUrl: string;
+  wordCount: number;
   wordList: {
     id: string;
     name: string;
@@ -22,6 +25,6 @@ export type Book = {
 export type Word = {
   id: string;
   name: string;
-  mean: string;
+  // mean: string;
   collectedAt: Date;
 };
