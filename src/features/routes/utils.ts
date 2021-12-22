@@ -40,7 +40,7 @@ const routeInfoList: RouteInfo[] = [
     showFooter: true,
   },
   {
-    name: 'Book',
+    name: 'UserBook',
     path: '/users/:id',
     icon: BookIcon,
     page: UserBookPage,

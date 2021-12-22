@@ -6,5 +6,5 @@ export const useLocationInfo = () => {
   const locationInfo = routeInfoList.find(
     (route) => route.path === location.pathname,
   );
-  return locationInfo ?? routeInfoList[0];
+  return locationInfo ?? routeInfoList[4];
 };
