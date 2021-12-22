@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Text, Box } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { Word } from '../../@types';
+import { getFeatureFlag } from '../../features/featureToggle';
 
 type WordCardProps = {
   isLast: boolean;
@@ -21,13 +23,13 @@ export const WordCard: FC<WordCardProps> = ({ word, isLast }) => {
       >
         {word.name}
         <Text
-          bottom={0}
+          bottom={2}
           color="text.sub"
           pos="absolute"
-          right={0}
+          right={2}
           textStyle="caption"
         >
-          {word.collectedAt.toString()}
+          {dayjs(word.collectedAt).format('YYYY/MM/DD HH:mm')}
         </Text>
       </Box>
       <Box
@@ -38,16 +40,18 @@ export const WordCard: FC<WordCardProps> = ({ word, isLast }) => {
         pos="relative"
         w={2}
       >
-        <Text
-          color={isLast ? 'primary' : 'success'}
-          left={4}
-          pos="absolute"
-          textStyle="display2"
-          top="50%"
-          transform="translate(0, -50%)"
-        >
-          {word.name.slice(-1).toUpperCase()}
-        </Text>
+        {getFeatureFlag().shiritori && (
+          <Text
+            color={isLast ? 'primary' : 'success'}
+            left={4}
+            pos="absolute"
+            textStyle="display2"
+            top="50%"
+            transform="translate(0, -50%)"
+          >
+            {word.name.slice(-1).toUpperCase()}
+          </Text>
+        )}
       </Box>
     </>
   );

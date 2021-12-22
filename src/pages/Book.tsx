@@ -1,7 +1,6 @@
 import { Box, useDisclosure, Spinner, Flex } from '@chakra-ui/react';
 import { FC, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { dummyWordList } from '../testdata/word';
 import { WordCard } from '../components/word/WordCard';
 import { Dialog } from '../components/common/Dialog';
 import { AuthContext } from '../features/auth/store';
@@ -10,7 +9,6 @@ export const BookPage: FC<{}> = () => {
   const [state] = useContext(AuthContext);
   const { isOpen, onOpen } = useDisclosure();
   const navigate = useNavigate();
-  const wordList = dummyWordList;
 
   useEffect(() => {
     if (state.status === 'none') onOpen();
@@ -21,7 +19,7 @@ export const BookPage: FC<{}> = () => {
       <Dialog
         content="ログインすることで辞書機能を利用できるようになります。"
         isOpenDialog={isOpen}
-        onCloseDialog={() => {}}
+        onCloseDialog={undefined}
         onOk={() => {
           navigate('/setting');
         }}
@@ -34,10 +32,10 @@ export const BookPage: FC<{}> = () => {
             </Flex>
           )}
           {state.status === 'success' &&
-            wordList.map((word, index) => {
+            state.user.wordList.map((word, index) => {
               return (
                 <WordCard
-                  isLast={wordList.length === index + 1}
+                  isLast={state.user.wordList.length === index + 1}
                   key={index}
                   word={word}
                 ></WordCard>

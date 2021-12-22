@@ -16,6 +16,7 @@ import {
   signOut,
 } from '../features/auth/utils';
 import 'firebase/auth';
+import { useDeleteUser } from '../features/users/deleteUserHook';
 
 type Handle = {
   text: string;
@@ -24,6 +25,8 @@ type Handle = {
 
 export const SettingPage: FC<{}> = () => {
   const toast = useToast();
+  const [state] = useContext(AuthContext);
+  const [deleteUser] = useDeleteUser();
   const handles: Handle[] = useMemo(
     () => [
       {
@@ -41,6 +44,9 @@ export const SettingPage: FC<{}> = () => {
       {
         text: 'ログアウトしますか？',
         action: () => {
+          console.log(state.status);
+          if (state.status !== 'success') return;
+          console.log(state.status);
           signOut().then(() => {
             toast({
               description: 'ログアウトしました',
@@ -51,10 +57,27 @@ export const SettingPage: FC<{}> = () => {
           });
         },
       },
+      {
+        text: '退会しますか？',
+        action: async () => {
+          if (state.status !== 'success') return;
+          try {
+            await deleteUser(state.user.id);
+            await signOut();
+            toast({
+              description: '退会しました',
+              status: 'success',
+              isClosable: true,
+              position: 'top',
+            });
+          } finally {
+          }
+        },
+      },
     ],
-    [toast],
+    [toast, state, deleteUser],
   );
-  const [state] = useContext(AuthContext);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [handle, setHandle] = useState<Handle>({
@@ -150,6 +173,11 @@ export const SettingPage: FC<{}> = () => {
               color="text.main"
               cursor="pointer"
               p={4}
+              onClick={(e) => {
+                e.preventDefault();
+                setHandle(handles[4]);
+                onOpen();
+              }}
             >
               <ExitIcon />
               <Text ml={2} textStyle="subheading">

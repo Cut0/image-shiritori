@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "module": "commonjs",
+    "target": "es2020",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "isolatedModules": false
+  }
+}

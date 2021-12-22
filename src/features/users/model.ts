@@ -18,9 +18,17 @@ export const userModel = () => {
     try {
       const doc = await db.collection('users').doc(id).get();
       if (doc.exists) {
-        return { id: doc.id, ...doc.data() } as User;
+        const user = { id: doc.id, ...doc.data() } as User;
+        user.wordList = user.wordList.map((word) => {
+          return {
+            ...word,
+            collectedAt: (
+              word.collectedAt as unknown as firebase.firestore.Timestamp
+            ).toDate(),
+          };
+        });
+        return user;
       } else {
-        return undefined;
       }
     } catch (e) {
       console.error(e);
@@ -33,7 +41,16 @@ export const userModel = () => {
       const docs = await db.collection('users').orderBy(sortkey, 'desc').get();
       const res: User[] = [];
       docs.forEach((doc) => {
-        res.push({ id: doc.id, ...doc.data() } as User);
+        const user = { id: doc.id, ...doc.data() } as User;
+        user.wordList = user.wordList.map((word) => {
+          return {
+            ...word,
+            collectedAt: (
+              word.collectedAt as unknown as firebase.firestore.Timestamp
+            ).toDate(),
+          };
+        });
+        res.push(user);
       });
       return res;
     } catch (e) {
@@ -56,10 +73,20 @@ export const userModel = () => {
     }
   };
 
+  const deleteUser = async (id: string) => {
+    try {
+      await db.collection('users').doc(id).delete();
+    } catch (e) {
+      console.error(e);
+      throw new Error('500');
+    }
+  };
+
   return {
     create,
     get,
     getList,
     updateBook,
+    deleteUser,
   };
 };
