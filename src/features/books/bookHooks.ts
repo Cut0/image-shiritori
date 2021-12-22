@@ -14,7 +14,7 @@ export const useBook = () => {
       if (authState.status !== 'success') return;
       dispatch({ type: 'FETCH_MYSELF_START' });
       return await userModel()
-        .updateBook(authState.user.id, wordList)
+        .updateBook(authState.user.id, authState.user.wordCount + 1, wordList)
         .then(() => {
           dispatch({
             type: 'FETCH_MYSELF_SUCCESS',

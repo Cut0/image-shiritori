@@ -59,12 +59,17 @@ export const userModel = () => {
     }
   };
 
-  const updateBook = async (id: string, wordList: User['wordList']) => {
+  const updateBook = async (
+    id: string,
+    wordCount: number,
+    wordList: User['wordList'],
+  ) => {
     try {
       await db
         .collection('users')
         .doc(id)
         .update({
+          wordCount,
           wordList: firebase.firestore.FieldValue.arrayUnion(...wordList),
         });
     } catch (e) {

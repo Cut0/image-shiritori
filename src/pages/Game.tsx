@@ -155,6 +155,16 @@ export const GamePage: FC<{}> = () => {
       });
       return;
     }
+    if (state.user.wordList.find((word) => word.name === wordName.current)) {
+      toast({
+        description: 'その単語は既に登録されています',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+
     const wordList = [
       { id: '1', name: wordName.current, collectedAt: new Date() },
     ];

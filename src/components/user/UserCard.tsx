@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Image, Flex, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { User } from '../../@types';
 
 type UserCardProps = {
@@ -9,15 +10,20 @@ type UserCardProps = {
 };
 
 export const UserCard: FC<UserCardProps> = ({ user, ranking, showRanking }) => {
+  const navigate = useNavigate();
   return (
     <Flex
       align="center"
       bgColor="whiteBackground"
       borderRadius="8px"
+      cursor="pointer"
       direction="column"
       position="relative"
       px={6}
       py={8}
+      onClick={() => {
+        navigate(`/users/${user.id}`);
+      }}
     >
       {showRanking && (
         <Text

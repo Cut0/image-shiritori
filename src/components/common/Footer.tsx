@@ -14,21 +14,23 @@ export const Footer = () => {
       templateColumns="repeat(4, 1fr)"
       w="100%"
     >
-      {routeInfoList.map((routeInfo, index) => (
-        <GridItem key={index}>
-          <Link
-            _focus={{ outline: 'none' }}
-            alignItems="center"
-            as={ReactLink}
-            display="flex"
-            h="100%"
-            justifyContent="center"
-            to={routeInfo.path}
-          >
-            <routeInfo.icon />
-          </Link>
-        </GridItem>
-      ))}
+      {routeInfoList
+        .filter((routeInfo) => routeInfo.showFooter)
+        .map((routeInfo, index) => (
+          <GridItem key={index}>
+            <Link
+              _focus={{ outline: 'none' }}
+              alignItems="center"
+              as={ReactLink}
+              display="flex"
+              h="100%"
+              justifyContent="center"
+              to={routeInfo.path}
+            >
+              <routeInfo.icon />
+            </Link>
+          </GridItem>
+        ))}
     </Grid>
   );
 };
