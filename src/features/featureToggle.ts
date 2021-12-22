@@ -1,5 +1,5 @@
 export const getFeatureFlag = () => {
   return {
-    shiritori: true,
+    shiritori: false,
   };
 };
