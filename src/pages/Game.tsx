@@ -109,9 +109,7 @@ export const GamePage: FC<{}> = () => {
       audio: false,
       video: {
         facingMode: 'environment',
-        aspectRatio: {
-          exact: 3 / 4,
-        },
+        aspectRatio: 3 / 4,
       },
     });
 

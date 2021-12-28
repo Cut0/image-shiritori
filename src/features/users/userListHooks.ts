@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { User } from '../../@types';
 import { userModel } from './model';
 
-export const useUsers = () => {
+export const useUserList = () => {
   const [userList, setUserList] = useState<User[]>([]);
 
   const getUserList = useCallback(async () => {

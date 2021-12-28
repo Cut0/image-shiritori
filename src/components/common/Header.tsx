@@ -3,7 +3,6 @@ import { useLocationInfo } from '../../features/routes/locationInfoHooks';
 
 export const Header = () => {
   const locationInfo = useLocationInfo();
-
   return (
     <Flex
       align="center"
