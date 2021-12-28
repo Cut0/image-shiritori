@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
 import { Box, Grid, Spinner, Flex } from '@chakra-ui/react';
 import { UserCard } from '../components/user/UserCard';
-import { useUsers } from '../features/users/usersHooks';
+import { useUserList } from '../features/users/userListHooks';
 
 export const RankingPage: FC<{}> = () => {
-  const [userList, setUserList] = useUsers();
+  const [userList, setUserList] = useUserList();
   useEffect(() => {
     setUserList();
   }, [setUserList]);
