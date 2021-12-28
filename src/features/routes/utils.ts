@@ -13,38 +13,44 @@ type RouteInfo = {
   path: string;
   icon: FC;
   page: FC;
-  showFooter: boolean;
+  showInFooter: boolean;
 };
 
 const routeInfoList: RouteInfo[] = [
-  { name: 'Game', path: '/', icon: GameIcon, page: GamePage, showFooter: true },
+  {
+    name: 'Game',
+    path: '/',
+    icon: GameIcon,
+    page: GamePage,
+    showInFooter: true,
+  },
   {
     name: 'Ranking',
     path: '/ranking',
     icon: CrownIcon,
     page: RankingPage,
-    showFooter: true,
+    showInFooter: true,
   },
   {
     name: 'Book',
     path: '/book',
     icon: BookIcon,
     page: BookPage,
-    showFooter: true,
+    showInFooter: true,
   },
   {
     name: 'Setting',
     path: '/setting',
     icon: ConfigIcon,
     page: SettingPage,
-    showFooter: true,
+    showInFooter: true,
   },
   {
     name: 'UserBook',
     path: '/users/:id',
     icon: BookIcon,
     page: UserBookPage,
-    showFooter: false,
+    showInFooter: false,
   },
 ];
 

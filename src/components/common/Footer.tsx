@@ -15,7 +15,7 @@ export const Footer = () => {
       w="100%"
     >
       {routeInfoList
-        .filter((routeInfo) => routeInfo.showFooter)
+        .filter((routeInfo) => routeInfo.showInFooter)
         .map((routeInfo, index) => (
           <GridItem key={index}>
             <Link
