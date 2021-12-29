@@ -5,6 +5,7 @@ import {
   useCallback,
   useRef,
   useState,
+  useMemo,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -24,6 +25,11 @@ import { SearchIcon } from '../icons';
 import { useBook } from '../features/books/bookHooks';
 import { getFeatureFlag } from '../features/featureToggle';
 
+type Handle = {
+  text: string;
+  action: () => Promise<void> | void;
+};
+
 export const GamePage: FC<{}> = () => {
   const [state] = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,8 +41,9 @@ export const GamePage: FC<{}> = () => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
+
   const wordName = useRef<undefined | string>(undefined);
-  const stream = useRef<undefined | MediaStream>(undefined);
+  const streamRef = useRef<undefined | MediaStream>(undefined);
   const renderable = useRef(true);
 
   const [updateBook] = useBook();
@@ -101,14 +108,37 @@ export const GamePage: FC<{}> = () => {
     },
     [renderable],
   );
+
+  const modalHandles: Handle[] = useMemo(
+    () => [
+      {
+        text: '探索を開始しますか？',
+        action: async () => {
+          const video = videoEl.current;
+          const canvas = canvasEl.current;
+          if (!canvas || !video) return;
+          const coco = await cocossd.load({ base: 'mobilenet_v1' });
+          video.play().then(() => setVideoLoaded(true));
+          draw(coco, video, canvas);
+        },
+      },
+      {
+        text: 'ログインすることで辞書機能を利用できるようになります。',
+        action: () => navigate('/setting'),
+      },
+    ],
+    [navigate, draw],
+  );
+
+  const modalHandle = useRef<Handle>(modalHandles[0]);
+
   const setUp = useCallback(async () => {
     updateClient();
     const video = videoEl.current;
-    const canvas = canvasEl.current;
 
-    if (!canvas || !video) return;
+    if (!video) return;
 
-    stream.current = await navigator.mediaDevices.getUserMedia({
+    streamRef.current = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
         facingMode: 'environment',
@@ -116,14 +146,12 @@ export const GamePage: FC<{}> = () => {
         height: 240,
       },
     });
-    video.srcObject = stream.current;
+    video.srcObject = streamRef.current;
 
     video.onloadedmetadata = async () => {
-      const coco = await cocossd.load({ base: 'mobilenet_v1' });
-      video.play().then(() => setVideoLoaded(true));
-      draw(coco, video, canvas);
+      onOpen();
     };
-  }, [draw, updateClient]);
+  }, [onOpen, updateClient]);
 
   const submitWord = useCallback(() => {
     if (wordName.current === undefined) {
@@ -136,6 +164,7 @@ export const GamePage: FC<{}> = () => {
       return;
     }
     if (state.status !== 'success') {
+      modalHandle.current = modalHandles[1];
       onOpen();
       return;
     }
@@ -185,7 +214,7 @@ export const GamePage: FC<{}> = () => {
           isClosable: true,
         });
       });
-  }, [state, wordName, onOpen, updateBook, toast]);
+  }, [state, modalHandles, wordName, onOpen, updateBook, toast]);
 
   useEffect(() => {
     setUp();
@@ -196,7 +225,7 @@ export const GamePage: FC<{}> = () => {
     return () => {
       renderable.current = false;
       video?.pause();
-      stream.current?.getAudioTracks().forEach((track) => {
+      streamRef.current?.getAudioTracks().forEach((track) => {
         track.stop();
       });
     };
@@ -205,12 +234,10 @@ export const GamePage: FC<{}> = () => {
   return (
     <>
       <Dialog
-        content="ログインすることで辞書機能を利用できるようになります。"
+        content={modalHandle.current.text}
         isOpenDialog={isOpen}
         onCloseDialog={onClose}
-        onOk={() => {
-          navigate('/setting');
-        }}
+        onOk={modalHandle.current.action}
       />
 
       <Box maxW="720px" mx="auto">
