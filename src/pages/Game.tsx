@@ -112,8 +112,8 @@ export const GamePage: FC<{}> = () => {
       audio: false,
       video: {
         facingMode: 'environment',
-        width: 300,
-        height: 400,
+        width: 320,
+        height: 240,
       },
     });
     video.srcObject = stream.current;
@@ -215,12 +215,12 @@ export const GamePage: FC<{}> = () => {
 
       <Box maxW="720px" mx="auto">
         {!videoLoaded && (
-          <AspectRatio ratio={3 / 4}>
+          <AspectRatio ratio={4 / 3}>
             <Skeleton h="100%" w="100%" />
           </AspectRatio>
         )}
         <AspectRatio
-          ratio={3 / 4}
+          ratio={4 / 3}
           ref={wrapperEl}
           visibility={videoLoaded ? 'visible' : 'hidden'}
         >
@@ -234,24 +234,26 @@ export const GamePage: FC<{}> = () => {
             ></canvas>
           </>
         </AspectRatio>
-        <Box m={4}>
-          <Button
-            _hover={{ bgColor: 'primary' }}
-            bgColor="primary"
-            borderColor="primary"
-            borderRadius="32px"
-            colorScheme="primary"
-            leftIcon={<SearchIcon />}
-            p={6}
-            variant="outline"
-            w="100%"
-            onClick={submitWord}
-          >
-            <Text color="white" textStyle="title">
-              Search
-            </Text>
-          </Button>
-        </Box>
+        {videoLoaded && (
+          <Box m={4}>
+            <Button
+              _hover={{ bgColor: 'primary' }}
+              bgColor="primary"
+              borderColor="primary"
+              borderRadius="32px"
+              colorScheme="primary"
+              leftIcon={<SearchIcon />}
+              p={6}
+              variant="outline"
+              w="100%"
+              onClick={submitWord}
+            >
+              <Text color="white" textStyle="title">
+                Search
+              </Text>
+            </Button>
+          </Box>
+        )}
       </Box>
     </>
   );
