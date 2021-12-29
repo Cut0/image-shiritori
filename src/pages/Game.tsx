@@ -254,7 +254,7 @@ export const GamePage: FC<{}> = () => {
           visibility={videoLoaded ? 'visible' : 'hidden'}
         >
           <>
-            <video ref={videoEl}></video>
+            <video ref={videoEl} playsInline></video>
             <canvas
               ref={canvasEl}
               style={{
