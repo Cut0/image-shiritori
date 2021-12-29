@@ -56,23 +56,26 @@ export const GamePage: FC<{}> = () => {
       canvas: HTMLCanvasElement,
     ) => {
       const ctx = canvas.getContext('2d');
-      const predictions = await coco.detect(canvas);
-
+      const predictions = await coco.detect(video);
       if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         predictions.forEach((prediction) => {
           const bbox = prediction.bbox;
           ctx.beginPath();
           ctx.lineWidth = 3;
           ctx.font = '24px sans-serif';
-          ctx.fillStyle = `hsl(${240 * (1 - prediction.score)},70%,70%)`;
           ctx.strokeStyle = `hsl(${240 * (1 - prediction.score)},70%,70%)`;
-          ctx.strokeRect(bbox[0], bbox[1], bbox[2], bbox[3]);
+          ctx.strokeRect(
+            (bbox[0] * video.width) / video.videoWidth,
+            (bbox[1] * video.height) / video.videoHeight,
+            (bbox[2] * video.width) / video.videoWidth,
+            (bbox[3] * video.height) / video.videoHeight,
+          );
           ctx.fillText(
             `${prediction.class} ${(prediction.score * 100).toFixed(1)}%`,
             bbox[0],
-            bbox[1] - 24,
+            bbox[1],
           );
         });
 
@@ -83,10 +86,10 @@ export const GamePage: FC<{}> = () => {
           ctx.beginPath();
           ctx.fillStyle = `rgba(${[0, 0, 125, 0.5]})`;
           ctx.fillRect(
-            maxPrediction.bbox[0],
-            maxPrediction.bbox[1],
-            maxPrediction.bbox[2],
-            maxPrediction.bbox[3],
+            (maxPrediction.bbox[0] * video.width) / video.videoWidth,
+            (maxPrediction.bbox[1] * video.height) / video.videoHeight,
+            (maxPrediction.bbox[2] * video.width) / video.videoWidth,
+            (maxPrediction.bbox[3] * video.height) / video.videoHeight,
           );
           wordName.current = maxPrediction.class;
         } else {
@@ -109,10 +112,10 @@ export const GamePage: FC<{}> = () => {
       audio: false,
       video: {
         facingMode: 'environment',
-        aspectRatio: 3 / 4,
+        width: 300,
+        height: 400,
       },
     });
-
     video.srcObject = stream.current;
 
     video.onloadedmetadata = async () => {
@@ -222,10 +225,12 @@ export const GamePage: FC<{}> = () => {
           visibility={videoLoaded ? 'visible' : 'hidden'}
         >
           <>
-            <video ref={videoEl} hidden></video>
+            <video ref={videoEl}></video>
             <canvas
               ref={canvasEl}
-              style={{ borderRadius: '0px 0px 32px 32px' }}
+              style={{
+                borderRadius: '0px 0px 32px 32px',
+              }}
             ></canvas>
           </>
         </AspectRatio>
