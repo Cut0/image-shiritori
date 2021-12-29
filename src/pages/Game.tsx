@@ -144,8 +144,7 @@ export const GamePage: FC<{}> = () => {
       audio: false,
       video: {
         facingMode: 'environment',
-        width: 640,
-        height: 480,
+        aspectRatio: { exact: 3 / 4 },
       },
     });
     video.srcObject = streamRef.current;
@@ -244,12 +243,12 @@ export const GamePage: FC<{}> = () => {
 
       <Box maxW="720px" mx="auto">
         {!videoLoaded && (
-          <AspectRatio ratio={4 / 3}>
+          <AspectRatio ratio={3 / 4}>
             <Skeleton h="100%" w="100%" />
           </AspectRatio>
         )}
         <AspectRatio
-          ratio={4 / 3}
+          ratio={3 / 4}
           ref={wrapperEl}
           visibility={videoLoaded ? 'visible' : 'hidden'}
         >
