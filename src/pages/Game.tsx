@@ -74,8 +74,8 @@ export const GamePage: FC<{}> = () => {
           );
           ctx.fillText(
             `${prediction.class} ${(prediction.score * 100).toFixed(1)}%`,
-            bbox[0],
-            bbox[1],
+            (bbox[0] * video.width) / video.videoWidth,
+            (bbox[1] * video.height) / video.videoHeight - 24,
           );
         });
 
