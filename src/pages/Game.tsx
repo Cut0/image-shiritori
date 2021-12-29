@@ -5,6 +5,7 @@ import {
   useCallback,
   useRef,
   useState,
+  useMemo,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -24,6 +25,11 @@ import { SearchIcon } from '../icons';
 import { useBook } from '../features/books/bookHooks';
 import { getFeatureFlag } from '../features/featureToggle';
 
+type Handle = {
+  text: string;
+  action: () => void;
+};
+
 export const GamePage: FC<{}> = () => {
   const [state] = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,8 +41,9 @@ export const GamePage: FC<{}> = () => {
   const canvasEl = useRef<HTMLCanvasElement>(null);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
+
   const wordName = useRef<undefined | string>(undefined);
-  const stream = useRef<undefined | MediaStream>(undefined);
+  const streamRef = useRef<undefined | MediaStream>(undefined);
   const renderable = useRef(true);
 
   const [updateBook] = useBook();
@@ -56,23 +63,26 @@ export const GamePage: FC<{}> = () => {
       canvas: HTMLCanvasElement,
     ) => {
       const ctx = canvas.getContext('2d');
-      const predictions = await coco.detect(canvas);
-
+      const predictions = await coco.detect(video);
       if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         predictions.forEach((prediction) => {
           const bbox = prediction.bbox;
           ctx.beginPath();
           ctx.lineWidth = 3;
           ctx.font = '24px sans-serif';
-          ctx.fillStyle = `hsl(${240 * (1 - prediction.score)},70%,70%)`;
           ctx.strokeStyle = `hsl(${240 * (1 - prediction.score)},70%,70%)`;
-          ctx.strokeRect(bbox[0], bbox[1], bbox[2], bbox[3]);
+          ctx.strokeRect(
+            (bbox[0] * video.width) / video.videoWidth,
+            (bbox[1] * video.height) / video.videoHeight,
+            (bbox[2] * video.width) / video.videoWidth,
+            (bbox[3] * video.height) / video.videoHeight,
+          );
           ctx.fillText(
             `${prediction.class} ${(prediction.score * 100).toFixed(1)}%`,
-            bbox[0],
-            bbox[1] - 24,
+            (bbox[0] * video.width) / video.videoWidth,
+            (bbox[1] * video.height) / video.videoHeight - 24,
           );
         });
 
@@ -83,10 +93,10 @@ export const GamePage: FC<{}> = () => {
           ctx.beginPath();
           ctx.fillStyle = `rgba(${[0, 0, 125, 0.5]})`;
           ctx.fillRect(
-            maxPrediction.bbox[0],
-            maxPrediction.bbox[1],
-            maxPrediction.bbox[2],
-            maxPrediction.bbox[3],
+            (maxPrediction.bbox[0] * video.width) / video.videoWidth,
+            (maxPrediction.bbox[1] * video.height) / video.videoHeight,
+            (maxPrediction.bbox[2] * video.width) / video.videoWidth,
+            (maxPrediction.bbox[3] * video.height) / video.videoHeight,
           );
           wordName.current = maxPrediction.class;
         } else {
@@ -98,29 +108,51 @@ export const GamePage: FC<{}> = () => {
     },
     [renderable],
   );
+
+  const modalHandles: Handle[] = useMemo(
+    () => [
+      {
+        text: '探索を開始しますか？',
+        action: () => {
+          const video = videoEl.current;
+          const canvas = canvasEl.current;
+          if (!canvas || !video) return;
+
+          cocossd.load({ base: 'mobilenet_v1' }).then((coco) => {
+            draw(coco, video, canvas);
+          });
+          video.play().then(() => setVideoLoaded(true));
+        },
+      },
+      {
+        text: 'ログインすることで辞書機能を利用できるようになります。',
+        action: () => navigate('/setting'),
+      },
+    ],
+    [navigate, draw],
+  );
+
+  const modalHandle = useRef<Handle>(modalHandles[0]);
+
   const setUp = useCallback(async () => {
     updateClient();
     const video = videoEl.current;
-    const canvas = canvasEl.current;
 
-    if (!canvas || !video) return;
+    if (!video) return;
 
-    stream.current = await navigator.mediaDevices.getUserMedia({
+    streamRef.current = await navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
         facingMode: 'environment',
-        aspectRatio: 3 / 4,
+        aspectRatio: { exact: 3 / 4 },
       },
     });
-
-    video.srcObject = stream.current;
+    video.srcObject = streamRef.current;
 
     video.onloadedmetadata = async () => {
-      const coco = await cocossd.load({ base: 'mobilenet_v1' });
-      video.play().then(() => setVideoLoaded(true));
-      draw(coco, video, canvas);
+      onOpen();
     };
-  }, [draw, updateClient]);
+  }, [onOpen, updateClient]);
 
   const submitWord = useCallback(() => {
     if (wordName.current === undefined) {
@@ -133,6 +165,7 @@ export const GamePage: FC<{}> = () => {
       return;
     }
     if (state.status !== 'success') {
+      modalHandle.current = modalHandles[1];
       onOpen();
       return;
     }
@@ -182,7 +215,7 @@ export const GamePage: FC<{}> = () => {
           isClosable: true,
         });
       });
-  }, [state, wordName, onOpen, updateBook, toast]);
+  }, [state, modalHandles, wordName, onOpen, updateBook, toast]);
 
   useEffect(() => {
     setUp();
@@ -193,7 +226,7 @@ export const GamePage: FC<{}> = () => {
     return () => {
       renderable.current = false;
       video?.pause();
-      stream.current?.getAudioTracks().forEach((track) => {
+      streamRef.current?.getAudioTracks().forEach((track) => {
         track.stop();
       });
     };
@@ -202,12 +235,10 @@ export const GamePage: FC<{}> = () => {
   return (
     <>
       <Dialog
-        content="ログインすることで辞書機能を利用できるようになります。"
+        content={modalHandle.current.text}
         isOpenDialog={isOpen}
         onCloseDialog={onClose}
-        onOk={() => {
-          navigate('/setting');
-        }}
+        onOk={modalHandle.current.action}
       />
 
       <Box maxW="720px" mx="auto">
@@ -222,31 +253,42 @@ export const GamePage: FC<{}> = () => {
           visibility={videoLoaded ? 'visible' : 'hidden'}
         >
           <>
-            <video ref={videoEl} hidden></video>
+            <video
+              ref={videoEl}
+              style={{
+                borderRadius: '0px 0px 32px 32px',
+              }}
+              muted
+              playsInline
+            ></video>
             <canvas
               ref={canvasEl}
-              style={{ borderRadius: '0px 0px 32px 32px' }}
+              style={{
+                borderRadius: '0px 0px 32px 32px',
+              }}
             ></canvas>
           </>
         </AspectRatio>
-        <Box m={4}>
-          <Button
-            _hover={{ bgColor: 'primary' }}
-            bgColor="primary"
-            borderColor="primary"
-            borderRadius="32px"
-            colorScheme="primary"
-            leftIcon={<SearchIcon />}
-            p={6}
-            variant="outline"
-            w="100%"
-            onClick={submitWord}
-          >
-            <Text color="white" textStyle="title">
-              Search
-            </Text>
-          </Button>
-        </Box>
+        {videoLoaded && (
+          <Box m={4}>
+            <Button
+              _hover={{ bgColor: 'primary' }}
+              bgColor="primary"
+              borderColor="primary"
+              borderRadius="32px"
+              colorScheme="primary"
+              leftIcon={<SearchIcon />}
+              p={6}
+              variant="outline"
+              w="100%"
+              onClick={submitWord}
+            >
+              <Text color="white" textStyle="title">
+                Search
+              </Text>
+            </Button>
+          </Box>
+        )}
       </Box>
     </>
   );

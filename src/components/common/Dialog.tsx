@@ -48,9 +48,9 @@ export const Dialog: FC<DialogProps> = ({
           <Button
             backgroundColor="primary"
             color="white"
-            onClick={async () => {
+            onClick={() => {
               try {
-                onOk && (await onOk());
+                onOk && onOk();
               } finally {
                 onCloseDialog && onCloseDialog();
               }
