@@ -44,9 +44,7 @@ export const SettingPage: FC<{}> = () => {
       {
         text: 'ログアウトしますか？',
         action: () => {
-          console.log(state.status);
           if (state.status !== 'success') return;
-          console.log(state.status);
           signOut().then(() => {
             toast({
               description: 'ログアウトしました',

@@ -27,7 +27,7 @@ import { getFeatureFlag } from '../features/featureToggle';
 
 type Handle = {
   text: string;
-  action: () => Promise<void> | void;
+  action: () => void;
 };
 
 export const GamePage: FC<{}> = () => {
@@ -113,13 +113,15 @@ export const GamePage: FC<{}> = () => {
     () => [
       {
         text: '探索を開始しますか？',
-        action: async () => {
+        action: () => {
           const video = videoEl.current;
           const canvas = canvasEl.current;
           if (!canvas || !video) return;
-          const coco = await cocossd.load({ base: 'mobilenet_v1' });
+
+          cocossd.load({ base: 'mobilenet_v1' }).then((coco) => {
+            draw(coco, video, canvas);
+          });
           video.play().then(() => setVideoLoaded(true));
-          draw(coco, video, canvas);
         },
       },
       {
