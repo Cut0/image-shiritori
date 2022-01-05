@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+## 概要
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+日常から英単語をみつけるアプリケーション(https://image-shiritori.web.app/)
 
-## Available Scripts
+## 構成・使用技術
 
-In the project directory, you can run:
+- [発表スライド](https://docs.google.com/presentation/d/1YBCnewIttyem9TFAOguQTSyC1vojlkJC0VRQBZgGRn8/edit?usp=sharing)を参照
 
-### `yarn start`
+## 環境構築
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- node(16 系あたり),yarn を利用
+- プロジェクトルートに.env ファイルを作成
+  ```
+  REACT_APP_APIKEY=""
+  REACT_APP_AUTHDOMAIN=""
+  REACT_APP_PROJECTID=""
+  REACT_APP_STORAGEBUCKET=""
+  REACT_APP_MESSAGEINGSENDERID=""
+  REACT_APP_APPID=""
+  ```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## コマンド
 
-### `yarn test`
+- `yarn start`:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  サーバーを立ち上げます。
 
-### `yarn build`
+- `yarn build`:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  ビルドします。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `yarn test`:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  テストします。(各 Hooks やビジネスロジックに関するテストを書こうと思ったのですが、時間の都合上サボっちゃいました。随時追加する予定です。)
 
-### `yarn eject`
+- `yarn eject`:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  CRA の eject 機能です。利用する際には eject ブランチを作成することを推奨します。主に webpack の output 用のファイル名を変更する目的です。課題の提出ファイル名が[学籍番号_名前.html]だったため採用しました。
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- `yarn create:user`:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  user のダミーデータを firestore に作成するコマンドです。
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 関連
 
-## Learn More
+- [発表スライド](https://docs.google.com/presentation/d/1YBCnewIttyem9TFAOguQTSyC1vojlkJC0VRQBZgGRn8/edit?usp=sharing)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [デザイン](https://www.figma.com/file/ZyHloAxuB3BgCmiuUafa8T/IMAGE-SHIRITORI?node-id=0%3A1)
