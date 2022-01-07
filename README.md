@@ -6,6 +6,10 @@
 
 - [発表スライド](https://docs.google.com/presentation/d/1YBCnewIttyem9TFAOguQTSyC1vojlkJC0VRQBZgGRn8/edit?usp=sharing)を参照
 
+## 開発フロー
+- 基本的にdevelopにPRを作成します。PR作成時にCIが走ってプレビュー用のサイトを公開するため確認できたらマージします。
+- masterにマージするとFirebase Hosting のCIが走り、自動的に本番環境に公開されます。
+
 ## 環境構築
 
 - node(16 系あたり),yarn を利用
